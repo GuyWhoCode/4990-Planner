@@ -1,8 +1,17 @@
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Home from './pages/Home';
+import Planner from './pages/Planner';
+
 function App() {
     return (
-        <>
-            <h1>4990 Planners</h1>
-        </>
+        <main>
+            <BrowserRouter basename="/">
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/planner" element={<Planner />} />
+                </Routes>
+            </BrowserRouter>
+        </main>
     );
 }
 
