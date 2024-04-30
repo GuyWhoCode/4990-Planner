@@ -29,7 +29,6 @@ export default function ConfirmationDialog({
 
     const handleSubmit = () => {
         setOpen(false);
-        console.log(configuration);
         localStorage.setItem("configuration", JSON.stringify(configuration));
     };
 
@@ -48,6 +47,7 @@ export default function ConfirmationDialog({
                 />
             </DialogContent>
             <DialogActions>
+                <Button onClick={() => setOpen(false)}>Cancel</Button>
                 <Button onClick={handleSubmit}>Submit</Button>
             </DialogActions>
         </Dialog>

@@ -1,13 +1,16 @@
 export interface Task {
-    id: number;
     title: string;
-    description: string;
-    status: TaskStatus;
+    weight: number;
 }
 
-export interface TaskStatus {
-    id: number;
+export interface Category {
     name: string;
+    tasks: Task[];
+}
+
+export interface Planner {
+    categories: Category[];
+    weightName: string;
 }
 
 export interface Configuration {
