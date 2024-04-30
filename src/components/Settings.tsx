@@ -1,10 +1,13 @@
 import { Configuration } from "@/types/Task";
 import { Container, TextField, Typography } from "@mui/material";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, Dispatch, SetStateAction } from "react";
 
-function Settings() {
-    const [setting, setSetting] = useState({} as Configuration);
+interface SettingsComponent {
+    setting: Configuration;
+    setSetting: Dispatch<SetStateAction<Configuration>>;
+}
 
+function Settings({ setting, setSetting }: SettingsComponent) {
     return (
         <Container
             sx={{
@@ -15,11 +18,7 @@ function Settings() {
                 borderRadius: "16px",
                 flexDirection: "column",
             }}
-            maxWidth="sm"
         >
-            <Typography variant="h3">AI Planner</Typography>
-            <br />
-
             <Container
                 sx={{
                     display: "flex",
@@ -72,15 +71,6 @@ function Settings() {
                     }}
                 />
             </Container>
-
-            <button
-                onClick={() => {
-                    console.log(setting);
-                    localStorage.setItem("configuration", JSON.stringify(setting));
-                }}
-            >
-                Submit
-            </button>
         </Container>
     );
 }
