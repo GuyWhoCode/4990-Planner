@@ -4,17 +4,33 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import Dialog from "@mui/material/Dialog";
 import Settings from "@/components/Settings";
-import { useState } from "react";
-import { Configuration } from "@/types/Task";
+import { Dispatch, SetStateAction, useContext, useEffect } from "react";
+import { ConfigurationContext } from "@/components/ConfigurationProvider";
 
-export default function ConfirmationDialog() {
-    const [open, setOpen] = useState(true);
-    const [setting, setSetting] = useState({} as Configuration);
+interface ConfirmationDialogProps {
+    open: boolean;
+    setOpen: Dispatch<SetStateAction<boolean>>;
+}
+
+export default function ConfirmationDialog({
+    open,
+    setOpen,
+}: ConfirmationDialogProps) {
+    const { configuration, setConfiguration } =
+        useContext(ConfigurationContext);
+
+    useEffect(() => {
+        const storedConfiguration = localStorage.getItem("configuration");
+        if (storedConfiguration) {
+            setConfiguration(JSON.parse(storedConfiguration));
+        }
+        setOpen(false);
+    }, [setConfiguration, setOpen]);
 
     const handleSubmit = () => {
         setOpen(false);
-        console.log(setting);
-        localStorage.setItem("configuration", JSON.stringify(setting));
+        console.log(configuration);
+        localStorage.setItem("configuration", JSON.stringify(configuration));
     };
 
     return (
@@ -26,7 +42,10 @@ export default function ConfirmationDialog() {
         >
             <DialogTitle>AI Planner</DialogTitle>
             <DialogContent dividers>
-                <Settings setting={setting} setSetting={setSetting}/>
+                <Settings
+                    setting={configuration}
+                    setSetting={setConfiguration}
+                />
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleSubmit}>Submit</Button>

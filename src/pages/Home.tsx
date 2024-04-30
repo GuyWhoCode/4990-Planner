@@ -1,26 +1,25 @@
+import { ConfigurationContext } from "@/components/ConfigurationProvider";
 import ConfirmationDialog from "@/components/Dialog";
-import { Configuration } from "@/types/Task";
-import { useState, useEffect } from "react";
+import { useEffect, useContext, useState } from "react";
 
 function Home() {
-    const [configuration, setConfiguration] = useState({} as Configuration);
+    const { configuration } = useContext(ConfigurationContext);
+    const [open, setOpen] = useState(true);
     useEffect(() => {
-        const storedConfiguration = localStorage.getItem("configuration");
-        if (storedConfiguration) {
-            setConfiguration(JSON.parse(storedConfiguration));
-        }
-    }, []);
+        console.log("Configuration updated", configuration);
+    }, [configuration]);
 
-    
     return (
         <div>
             <h1>Home</h1>
-            <ConfirmationDialog />
+            <ConfirmationDialog open={open} setOpen={setOpen}/>
             <h2>Category</h2>
             <p>{configuration.category}</p>
 
             <h2>Quantifier</h2>
             <p>{configuration.quantifier}</p>
+
+            <button onClick={() => setOpen(true)}>Reset Configuration</button>
         </div>
     );
 }
