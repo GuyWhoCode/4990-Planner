@@ -29,10 +29,7 @@ function TaskComponent({ title, weight }: Task) {
                         {title}
                     </Typography>
                     <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                        {weight}{" "}
-                        {weight > 1
-                            ? configuration.quantifier + "s"
-                            : configuration.quantifier}
+                        {weight} {configuration.quantifier}
                     </Typography>
                 </CardContent>
                 <CardActions>

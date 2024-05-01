@@ -1,17 +1,28 @@
-import { ConfigurationContext } from "@/components/ConfigurationProvider";
 import ConfirmationDialog from "@/components/Dialog";
 import { IconButton } from "@mui/material";
-import { useEffect, useContext, useState } from "react";
+import { useEffect, useState } from "react";
 import SettingsIcon from "@mui/icons-material/Settings";
 import TaskComponent from "@/components/Task";
-import Category from "@/components/Category";
+import { Category, Planner, Task } from "@/types/Task";
+import CategoryComponent from "@/components/Category";
 
 function Home() {
-    const { configuration } = useContext(ConfigurationContext);
     const [open, setOpen] = useState(true);
+    const [planner, setPlanner] = useState({} as Planner);
+
     useEffect(() => {
-        console.log("Configuration updated", configuration);
-    }, [configuration]);
+        const storedPlanner = localStorage.getItem("planner");
+        if (storedPlanner) {
+            const parsedPlanner = JSON.parse(storedPlanner);
+
+            // // Sorting algorithm for the tasks
+            parsedPlanner.categories.forEach((category: Category) => {
+                category.tasks.sort((a: Task, b: Task) => b.weight - a.weight);
+            });
+
+            setPlanner(parsedPlanner);
+        }
+    }, [setPlanner]);
 
     return (
         <div>
@@ -31,19 +42,18 @@ function Home() {
                     flexDirection: "row",
                 }}
             >
-                <Category name="Epic 1">
-                    <TaskComponent title="Test1" weight={5} />
-                    <TaskComponent title="Test2" weight={2} />
-                    <TaskComponent title="Test3" weight={6} />
-                    <TaskComponent title="Test4" weight={1} />
-                </Category>
-                
-                <Category name="Epic 1">
-                    <TaskComponent title="Test1" weight={5} />
-                    <TaskComponent title="Test2" weight={2} />
-                    <TaskComponent title="Test3" weight={6} />
-                    <TaskComponent title="Test4" weight={1} />
-                </Category>
+                {planner.categories &&
+                    planner.categories.map((category, index) => (
+                        <CategoryComponent key={index} name={category.name}>
+                            {category.tasks.map((task, index) => (
+                                <TaskComponent
+                                    key={index}
+                                    title={task.title}
+                                    weight={task.weight}
+                                />
+                            ))}
+                        </CategoryComponent>
+                    ))}
             </section>
         </div>
     );

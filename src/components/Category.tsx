@@ -6,7 +6,7 @@ interface CategoryProps {
     children: ReactNode;
 }
 
-function Category({ name, children }: CategoryProps) {
+function CategoryComponent({ name, children }: CategoryProps) {
     return (
         <Container maxWidth="xs">
             <h1 style={{ textAlign: "center" }}>{name}</h1>
@@ -16,4 +16,4 @@ function Category({ name, children }: CategoryProps) {
     );
 }
 
-export default Category;
+export default CategoryComponent;
