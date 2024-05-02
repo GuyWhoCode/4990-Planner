@@ -6,24 +6,33 @@ import {
     Container,
     Typography,
 } from "@mui/material";
-import { Task } from "@/types/Task";
 import { useContext } from "react";
 import { ConfigurationContext } from "./ConfigurationProvider";
 
-function TaskComponent({ title, weight }: Task) {
+interface TaskComponentProps {
+    title: string;
+    weight: number;
+    completedTask: () => void;
+    taskColor: string;
+}
+
+function TaskComponent({
+    title,
+    weight,
+    completedTask,
+    taskColor,
+}: TaskComponentProps) {
     const { configuration } = useContext(ConfigurationContext);
 
     return (
         <Container
             sx={{
-                minWidth: 275,
-                maxWidth: "25vw",
-                marginBottom: "2vh",
-                marginTop: "2vh",
+                marginBottom: "4vh",
+                marginTop: "4vh",
             }}
             maxWidth="xs"
         >
-            <Card variant="outlined">
+            <Card elevation={3}>
                 <CardContent>
                     <Typography variant="h5" component="div">
                         {title}
@@ -33,7 +42,15 @@ function TaskComponent({ title, weight }: Task) {
                     </Typography>
                 </CardContent>
                 <CardActions>
-                    <Button size="small">Mark as Done</Button>
+                    <Button
+                        size="small"
+                        onClick={completedTask}
+                        sx={{
+                            backgroundColor: taskColor,
+                        }}
+                    >
+                        Mark as Done
+                    </Button>
                 </CardActions>
             </Card>
         </Container>

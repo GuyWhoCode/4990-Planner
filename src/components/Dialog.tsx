@@ -4,9 +4,16 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import Dialog from "@mui/material/Dialog";
 import Settings from "@/components/Settings";
-import { Dispatch, SetStateAction, useContext, useEffect } from "react";
+import {
+    Dispatch,
+    SetStateAction,
+    useContext,
+    useEffect,
+    useState,
+} from "react";
 import { ConfigurationContext } from "@/components/ConfigurationProvider";
 import TaskGeneration from "@/lib/TaskGeneration";
+import { CircularProgress, Container } from "@mui/material";
 
 interface ConfirmationDialogProps {
     open: boolean;
@@ -20,6 +27,8 @@ export default function ConfirmationDialog({
     const { configuration, setConfiguration } =
         useContext(ConfigurationContext);
 
+    const [loading, setLoading] = useState(false);
+
     useEffect(() => {
         const storedConfiguration = localStorage.getItem("configuration");
         if (storedConfiguration) {
@@ -29,34 +38,52 @@ export default function ConfirmationDialog({
     }, [setConfiguration, setOpen]);
 
     const handleSubmit = async () => {
-        setOpen(false);
+        setLoading(true);
         localStorage.setItem("configuration", JSON.stringify(configuration));
-        // localStorage.setItem("configuration", JSON.stringify(configuration));
-        // const tasks = await TaskGeneration(configuration);
-        // console.log(tasks)
+        const tasks = await TaskGeneration(configuration);
+        await localStorage.setItem("tasks", tasks.choices[0].message.content ?? "");
+        
+        setLoading(false);
+        window.location.reload();
         // {
-        //     "id": "chatcmpl-9JwJ7Lzn3mabuwm1aVYugSBD0KXjG",
-        //     "object": "chat.completion",
-        //     "created": 1714539393,
-        //     "model": "gpt-4-0613",
-        //     "choices": [
+        //     "categories": [
         //         {
-        //             "index": 0,
-        //             "message": {
-        //                 "role": "assistant",
-        //             },
-        //             "logprobs": null,
-        //             "finish_reason": "stop"
+        //             "name": "Major",
+        //             "tasks": [
+        //                 {
+        //                     "title": "Coordinate with people for project completion",
+        //                     "weight": 40
+        //                 },
+        //                 {
+        //                     "title": "Hold team meeting with people for project updates",
+        //                     "weight": 30
+        //                 },
+        //                 {
+        //                     "title": "Designate people to new tasks",
+        //                     "weight": 20
+        //                 },
+        //                 {
+        //                     "title": "Follow up with people regarding pending tasks",
+        //                     "weight": 10
+        //                 }
+        //             ]
+        //         },
+        //         {
+        //             "name": "Minor",
+        //             "tasks": [
+        //                 {
+        //                     "title": "Email people about upcoming deadlines",
+        //                     "weight": 15
+        //                 },
+        //                 {
+        //                     "title": "Arrange a casual catch-up with people to ensure team spirit",
+        //                     "weight": 5
+        //                 }
+        //             ]
         //         }
         //     ],
-        //     "usage": {
-        //         "prompt_tokens": 119,
-        //         "completion_tokens": 147,
-        //         "total_tokens": 266
-        //     },
-        //     "system_fingerprint": null
+        //     "weightName": "people"
         // }
-        // JSON.parse("{\n  \"categories\": [\n    {\n      \"name\": \"Epics\",\n      \"tasks\": [\n        {\n          \"title\": \"Implement login functionality\",\n          \"weight\": 8\n        },\n        {\n          \"title\": \"Develop the user profile module\",\n          \"weight\": 13\n        },\n        {\n          \"title\": \"Design the UI for the dashboard\",\n          \"weight\": 5\n        },\n        {\n          \"title\": \"Create the database architecture\",\n          \"weight\": 21\n        },\n        {\n          \"title\": \"Setup the server and deploy the application\",\n          \"weight\": 13\n        }\n      ]\n    }\n  ],\n  \"weightName\": \"Story Points\"\n}"
     };
 
     return (
@@ -68,10 +95,24 @@ export default function ConfirmationDialog({
         >
             <DialogTitle variant="h4">AI Planner</DialogTitle>
             <DialogContent dividers>
-                <Settings
-                    setting={configuration}
-                    setSetting={setConfiguration}
-                />
+                {!loading && (
+                    <Settings
+                        setting={configuration}
+                        setSetting={setConfiguration}
+                    />
+                )}
+                {loading && (
+                    <Container
+                        sx={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            height: "100%",
+                        }}
+                    >
+                        <CircularProgress />
+                    </Container>
+                )}
             </DialogContent>
             <DialogActions>
                 <Button onClick={() => setOpen(false)}>Cancel</Button>
