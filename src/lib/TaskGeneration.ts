@@ -6,8 +6,8 @@ const openai = new OpenAI({
     dangerouslyAllowBrowser: true,
 });
 
-async function TaskGeneration({ category, quantifier }: Configuration) {
-    const userInput = `category: ${category}\nquantifier: ${quantifier}`;
+async function TaskGeneration({ category, quantifier, tasks }: Configuration) {
+    const userInput = `category: ${category}\nquantifier: ${quantifier}\n${tasks}`;
 
     const response = await openai.chat.completions.create({
         model: "gpt-4",

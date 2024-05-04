@@ -45,45 +45,6 @@ export default function ConfirmationDialog({
         
         setLoading(false);
         window.location.reload();
-        // {
-        //     "categories": [
-        //         {
-        //             "name": "Major",
-        //             "tasks": [
-        //                 {
-        //                     "title": "Coordinate with people for project completion",
-        //                     "weight": 40
-        //                 },
-        //                 {
-        //                     "title": "Hold team meeting with people for project updates",
-        //                     "weight": 30
-        //                 },
-        //                 {
-        //                     "title": "Designate people to new tasks",
-        //                     "weight": 20
-        //                 },
-        //                 {
-        //                     "title": "Follow up with people regarding pending tasks",
-        //                     "weight": 10
-        //                 }
-        //             ]
-        //         },
-        //         {
-        //             "name": "Minor",
-        //             "tasks": [
-        //                 {
-        //                     "title": "Email people about upcoming deadlines",
-        //                     "weight": 15
-        //                 },
-        //                 {
-        //                     "title": "Arrange a casual catch-up with people to ensure team spirit",
-        //                     "weight": 5
-        //                 }
-        //             ]
-        //         }
-        //     ],
-        //     "weightName": "people"
-        // }
     };
 
     return (

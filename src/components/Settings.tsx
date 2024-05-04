@@ -71,6 +71,27 @@ function Settings({ setting, setSetting }: SettingsComponent) {
                     }}
                 />
             </Container>
+            <Container sx={
+                {
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignItems: "center",
+                }
+            }
+            >
+                <TextField
+                    multiline
+                    fullWidth
+                    placeholder="Optional: Tasks (separated by hyphens)"
+                    onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                        setSetting({
+                            ...setting,
+                            tasks: event.target.value,
+                        });
+                    }}
+                ></TextField>
+            </Container>
         </Container>
     );
 }

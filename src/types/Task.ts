@@ -16,4 +16,5 @@ export interface Planner {
 export interface Configuration {
     category: string;
     quantifier: string;
+    tasks?: string;
 }
