@@ -12,7 +12,6 @@ import {
     useState,
 } from "react";
 import { ConfigurationContext } from "@/components/ConfigurationProvider";
-import TaskGeneration from "@/lib/TaskGeneration";
 import { CircularProgress, Container } from "@mui/material";
 
 interface ConfirmationDialogProps {
@@ -40,9 +39,18 @@ export default function ConfirmationDialog({
     const handleSubmit = async () => {
         setLoading(true);
         localStorage.setItem("configuration", JSON.stringify(configuration));
-        const tasks = await TaskGeneration(configuration);
-        await localStorage.setItem("tasks", tasks.choices[0].message.content ?? "");
-        
+        const request = await fetch("/generate-tasks", {
+            method: "POST",
+            body: JSON.stringify(configuration),
+        });
+
+        const tasks = await request.json();
+
+        await localStorage.setItem(
+            "tasks",
+            tasks.choices[0].message.content ?? ""
+        );
+
         setLoading(false);
         window.location.reload();
     };
