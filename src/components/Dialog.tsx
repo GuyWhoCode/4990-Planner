@@ -46,7 +46,7 @@ export default function ConfirmationDialog({
 
         const tasks = await request.json();
 
-        await localStorage.setItem("tasks", tasks ?? "");
+        await localStorage.setItem("tasks", JSON.stringify(tasks) ?? "");
 
         setLoading(false);
         window.location.reload();
