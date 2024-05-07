@@ -1,11 +1,10 @@
 import ConfirmationDialog from "@/components/Dialog";
 import { IconButton } from "@mui/material";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import SettingsIcon from "@mui/icons-material/Settings";
 import TaskComponent from "@/components/Task";
 import { Category, Planner, Task } from "@/types/Task";
 import CategoryComponent from "@/components/Category";
-import { ConfigurationContext } from "@/components/ConfigurationProvider";
 
 const BACKGROUND_COLORS = [
     "#F1F1EF",
@@ -28,7 +27,6 @@ function Home() {
     const [categoryBackgroundColor, setCategoryBackgroundColor] = useState<
         string[]
     >([]);
-    const {setConfiguration} = useContext(ConfigurationContext);
 
     useEffect(() => {
         if (planner.categories) {
@@ -52,6 +50,9 @@ function Home() {
             });
 
             setPlanner(parsedPlanner);
+            setOpen(false);
+        } else {
+            setOpen(true);
         }
     }, [setPlanner]);
 
@@ -68,15 +69,10 @@ function Home() {
 
             <IconButton
                 aria-label="Setting"
+                sx={{ fontSize: "4rem" }}
                 onClick={() => {
                     setOpen(true);
-                    setConfiguration({
-                        category: "Epic",
-                        quantifier: "[Category Value]",
-                        tasks: "",
-                    });
                 }}
-                sx={{ fontSize: "4rem" }}
             >
                 <SettingsIcon fontSize={"inherit"} />
             </IconButton>

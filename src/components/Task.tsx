@@ -6,8 +6,8 @@ import {
     Container,
     Typography,
 } from "@mui/material";
-import { useContext } from "react";
-import { ConfigurationContext } from "./ConfigurationProvider";
+import { useEffect, useState } from "react";
+import { Task, Category, Planner } from "@/types/Task";
 
 interface TaskComponentProps {
     title: string;
@@ -22,7 +22,21 @@ function TaskComponent({
     completedTask,
     taskColor,
 }: TaskComponentProps) {
-    const { configuration } = useContext(ConfigurationContext);
+    const [planner, setPlanner] = useState({} as Planner);
+
+    useEffect(() => {
+        const storedPlanner = localStorage.getItem("tasks");
+        if (storedPlanner) {
+            const parsedPlanner = JSON.parse(storedPlanner);
+
+            // Sorting algorithm for the tasks
+            parsedPlanner.categories.forEach((category: Category) => {
+                category.tasks.sort((a: Task, b: Task) => b.weight - a.weight);
+            });
+
+            setPlanner(parsedPlanner);
+        }
+    }, [setPlanner]);
 
     return (
         <Container
@@ -38,7 +52,7 @@ function TaskComponent({
                         {title}
                     </Typography>
                     <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                        {weight} {configuration.quantifier}
+                        {weight} {planner.weightName}
                     </Typography>
                 </CardContent>
                 <CardActions>
