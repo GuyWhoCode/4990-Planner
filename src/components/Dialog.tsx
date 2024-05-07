@@ -13,14 +13,14 @@ import {
 } from "react";
 import { ConfigurationContext } from "@/components/ConfigurationProvider";
 import { CircularProgress, Container } from "@mui/material";
-import TaskGeneration from "@/lib/TaskGeneration";
+// import TaskGeneration from "@/lib/TaskGeneration";
 
 interface ConfirmationDialogProps {
     open: boolean;
     setOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-const DEV_MODE = false;
+// const DEV_MODE = false;
 
 export default function ConfirmationDialog({
     open,
@@ -41,6 +41,18 @@ export default function ConfirmationDialog({
     const handleSubmit = async () => {
         setLoading(true);
         localStorage.setItem("configuration", JSON.stringify(configuration));
+
+        // let tasks;
+        // if (DEV_MODE) {
+        //     tasks = await TaskGeneration(configuration);
+        // } else {
+        //     const request = await fetch("/generate-tasks", {
+        //         method: "POST",
+        //         body: JSON.stringify(configuration),
+        //     });
+
+        //     tasks = JSON.stringify(await request.json());
+        // }
 
         const request = await fetch("/generate-tasks", {
             method: "POST",
