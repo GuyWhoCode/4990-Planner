@@ -15,7 +15,7 @@ async function TaskGeneration({ category, quantifier, tasks }: Configuration) {
             {
                 role: "system",
                 content:
-                    "Create a To Do List if given a list of tasks organized by hyphens. Generate To Do List items if not given a list. Organize the tasks by a specified category and quantifier. Generate more related categories as needed.\nOutput the response in the following JSON format based on the Planner TypeScript type:\n\ninterface Task {\n    title: string;\n    weight: number;\n}\n\ninterface Category {\n    name: string;\n    tasks: Task[];\n}\n\ninterface Planner {\n    categories: Category[];\n    weightName: string;\n}\n",
+                    "Create a To Do List if given a list of tasks organized by hyphens. Generate list items and related categories if not given a list. Organize the tasks by a specified category and quantifier.\nOutput the response only in JSON format with categories (array) of tasks (object) and weightName (string). Each category has name (property), tasks (array). Each task has title (property) and weight (number).\n",
             },
             {
                 role: "user",

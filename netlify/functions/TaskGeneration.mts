@@ -14,7 +14,7 @@ function generatePrompt({ category, quantifier, tasks }: Configuration) {
             {
                 role: "system",
                 content:
-                    "Create a To Do List if given a list of tasks organized by hyphens. Generate To Do List items if not given a list. Organize the tasks by a specified category and quantifier.\nOutput the response in only JSON and include: categories (array) containing tasks (object).\nEach category has name (property), tasks (array), each task has title(property) and weight(number).",
+                    "Create a To Do List if given a list of tasks organized by hyphens. Generate list items and related categories if not given a list. Organize the tasks by a specified category and quantifier.\nOutput the response only in JSON format with categories (array) of tasks (object) and weightName (string). Each category has name (property), tasks (array). Each task has title (property) and weight (number).\n",
             },
             {
                 role: "user",
