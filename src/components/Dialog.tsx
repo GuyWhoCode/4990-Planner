@@ -42,17 +42,12 @@ export default function ConfirmationDialog({
         setLoading(true);
         localStorage.setItem("configuration", JSON.stringify(configuration));
 
-        let tasks;
-        if (DEV_MODE) {
-            tasks = await TaskGeneration(configuration);
-        } else {
-            const request = await fetch("/generate-tasks", {
-                method: "POST",
-                body: JSON.stringify(configuration),
-            });
+        const request = await fetch("/generate-tasks", {
+            method: "POST",
+            body: JSON.stringify(configuration),
+        });
 
-            tasks = JSON.stringify(await request.json());
-        }
+        const tasks = JSON.stringify(await request.json());
         await localStorage.setItem("tasks", tasks ?? "");
 
         setLoading(false);
